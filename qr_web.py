@@ -38,3 +38,4 @@ if st.button("🚀 Generate QR Code"):
         )
     else:
         st.warning("⚠️ Please enter a valid link.")
+        
