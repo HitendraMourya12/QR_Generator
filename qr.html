@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Generator</title>
+  
+  <!-- ✅ Favicon (replace with your own path if needed) -->
+  <link rel="icon" type="image/png" href="https://api.iconify.design/mdi:qrcode.svg">
+
+  <style>
+      @keyframes backgroundZoom {
+    0% {
+      background-size: 100%;
+    }
+    50% {
+      background-size: 105%;
+    }
+    100% {
+      background-size: 100%;
+    }
+  }
+
+  body {
+    font-family: 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://hips.hearstapps.com/hmg-prod/images/qr-code-royalty-free-illustration-1645118330.jpg') no-repeat center center fixed;
+    background-size: cover;
+    animation: backgroundZoom 30s ease-in-out infinite;
+    color: #e2e8f0; /* Softer white */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #3fd6d6; /* Light blue */
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #ffffff; /* Soft gray-blue */
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #000000;
+      border-radius: 10px;
+      background-color: #ffffff;
+      color: #000000;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #38bdf8;
+      color: #f4f7ff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    #qr-code {
+      margin-top: 1.5rem;
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      background-color: #22c55e;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background-color: #16a34a;
+    }
+
+    .warning {
+      color: #f87171;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1> QR Code Generator</h1>
+    <p>Enter a link below to generate a QR code.</p>
+
+    <input type="text" id="urlInput" placeholder="🔗 Enter your URL">
+    <br>
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <p id="warning" class="warning"></p>
+
+    <div id="qr-code"></div>
+    <a id="downloadLink" class="download-btn" style="display:none" download="qrcode.png">Download QR Code</a>
+  </div>
+
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    function generateQRCode() {
+      const url = document.getElementById("urlInput").value;
+      const qrContainer = document.getElementById("qr-code");
+      const warning = document.getElementById("warning");
+      const downloadLink = document.getElementById("downloadLink");
+
+      qrContainer.innerHTML = "";
+      warning.textContent = "";
+      downloadLink.style.display = "none";
+
+      if (!url.trim()) {
+        warning.textContent = "⚠️ Please enter a valid link.";
+        return;
+      }
+
+      const qr = new QRCode(qrContainer, {
+        text: url,
+        width: 256,
+        height: 256,
+        colorDark: "#ffffff",
+        colorLight: "#1e293b",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      // Wait to access the image for download
+      setTimeout(() => {
+        const img = qrContainer.querySelector("img");
+        if (img) {
+          downloadLink.href = img.src;
+          downloadLink.style.display = "inline-block";
+        }
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>
